@@ -1,65 +1,64 @@
+enum Table {
+    TRUE, FALSE
+}
 public class leetcode10 {
+    Table[][] dp;
+
     public boolean sol(String s, String p) {
-        char[] src = s.toCharArray();
-        char[] ptn = p.toCharArray();
+        dp = new Table[s.length() + 1][p.length() + 1];
+        return rdp(s.length(), p.length(), s, p);
+    }
 
-        int i1 = src.length - 1;
-        int i2 = ptn.length - 1;
-
-        int[] starChar = new int[]{ptn.length, 0};
-        while ((i1 >= 0) && (i2 >= 0)) {
-            if (ptn[i2] == 42) {
-                starChar[0] = i2;
-                int[] position = starChar(src, i1, ptn, i2);
-                starChar[1] = i1 - position[0];
-                i1 = position[0];
-                i2 = position[1];
-                continue;
-            }
-            if (!compare(src[i1], ptn[i2])) {
-                if ()
-                return false;
-            }
-            i1 --;
-            i2 --;
+    //Reverse dp that I wrote for exercise
+    public boolean rdp(int i, int j, String text, String pattern) {
+        if (dp[i][j] != null) {
+            return dp[i][j] == Table.TRUE;
         }
 
-        if (i1 < 0 && i2 < 0) {
-            return true;
+        if (j == 0) {
+            return i == 0;
         }
-        if (i2 < 0) {
-            return false;
-        }
-        while (i2 >= 0) {
-            if (ptn[i2] == 42) {
-                i2 = i2 - 2;
+        boolean ans;
+        boolean first_match;
+            if (pattern.charAt(j - 1) == '*') {
+                first_match = i > 0 && (text.charAt(i - 1) == pattern.charAt(j - 2) || pattern.charAt(j - 2) == '.');
+                ans = rdp(i, j - 2, text, pattern) || first_match && rdp(i - 1, j, text, pattern);
             } else {
-                return false;
+                first_match = i > 0 && text.charAt(i - 1) == pattern.charAt(j - 1) || pattern.charAt(j - 1) == '.';
+                ans = first_match && rdp(i - 1, j - 1, text, pattern);
+            }
+
+        dp[i][j] = ans ? Table.TRUE : Table.FALSE;
+        return ans;
+    }
+    // normal dp copied from leetcode solution
+    /*public boolean dp(int S, int P, String s, String p) {
+        // If the result has been computed
+        if (table[S][P] != null) {
+            return table[S][P] == Table.TRUE;
+        }
+
+        boolean ans;
+        // Check if P reaches the end
+        if (P == p.length()) {
+            ans = S == s.length();
+
+        } else {
+            //Check whether the char in s matches the char in p
+            boolean first_match = (S < s.length() &&
+                (p.charAt(P) == s.charAt(S) ||
+                    p.charAt(P) == '.'));
+            // Check if the next char is '*'.
+            if (P + 1 < p.length() && p.charAt(P+1) == '*'){
+                // either the star represents 0 elements or many elements, dp until we locate the n elements
+                ans = (dp(S, P+2, s, p) ||
+                    first_match && dp( S+1, P, s, p));
+            } else {
+                // check whether the next element of both are match
+                ans = first_match && dp(S+1, P+1, s, p);
             }
         }
-        return true;
-    }
-
-    public boolean compare(int i1, int i2) {
-        if (i2 == 46) {
-            return true;
-        }
-        return i1 == i2;
-    }
-
-    public int[] starChar(char[] src, int i1, char[] ptn, int i2) {
-        int prev = ptn[i2 - 1];
-        int[] ret = new int[2];
-        while (i1 >= 0) {
-            if (!compare(src[i1], prev)) {
-                ret[0] = i1;
-                ret[1] = i2 - 2;
-                return ret;
-            }
-            i1 --;
-        }
-        ret[0] = i1;
-        ret[1] = i2 - 2;
-        return ret;
-    }
+        table[S][P] = ans ? Table.TRUE : Table.FALSE;
+        return ans;
+    }*/
 }

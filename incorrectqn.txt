@@ -1,0 +1,17 @@
+leetcode 64 dp array that only runs in java
+leetcode 39 use recursive with number starting from index, 1
+leetcode 40
+leetcode 42
+leetcode 909
+leetcode 44
+leetcode 46
+leetcode 47
+leetcode 67
+leetcode 48 flip the sqaure from the lint(leftTop to botRight) and reverse
+leetcode 50 pow(x,7) = x^1 * x^2 * x^4
+leetcode 169 count the number of most frequent
+leetcode 189 using reverse to reverse the vector several times
+leetcode207 using deque
+leetcode 97 using bool vector
+leetcode 92 using Using recursive method and only swap the value of the nodes
+
